@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Movies of All Time</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 24px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .pagination a {
+            text-decoration: none;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .pagination a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Top Movies of All Time</h1>
+        <ul>
+            {% for movie in movies %}
+                <li><strong>{{ movie.title }}</strong> - Year: {{ movie.year }}, Score: {{ movie.score }}</li>
+            {% endfor %}
+        </ul>
+        <div class="pagination">
+            {% if prev_page %}
+                <a href="{{ url_for('scrape_rotten_tomato', page=prev_page) }}">Previous</a>
+            {% else %}
+                <span></span>
+            {% endif %}
+            {% if next_page %}
+                <a href="{{ url_for('scrape_rotten_tomato', page=next_page) }}">Next</a>
+            {% endif %}
+        </div>
+        <a href="/">Go Back</a>
+    </div>
+</body>
+</html>
