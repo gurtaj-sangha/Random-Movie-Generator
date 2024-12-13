@@ -1,2 +1,2 @@
 # Random-Movie-Generator
-This program generates a list of movies based on user input
+This is a program where a user can select certain filters and the program will generate a list of movies based on the filter. If a user wants to get a movie at rand, they can also do that. The front-end was created with HTML/CSS. I also used flask and django for certain parts like generating the list of movies and to connect the front-end with the back-end. The back-end was created using Python, but implementing the beautifuol soup library for webscraping to get the movies (may change this and used a library that contains movie titles instead of webscraping).
