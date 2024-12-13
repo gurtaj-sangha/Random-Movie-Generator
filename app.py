@@ -6,7 +6,6 @@ import random
 app = Flask(__name__)
 
 ROTTEN_TOMATO_TOP_URL = "https://editorial.rottentomatoes.com/guide/best-movies-of-all-time/"
-#METACRITIC_GENRE_URL = "https://www.metacritic.com/browse/movie/all/action/all-time/metascore/?releaseYearMin=1910&releaseYearMax=2024&genre=action&page=1"
 
 user_agents_list = [
     'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
