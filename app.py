@@ -24,9 +24,9 @@ def scrape():
     max_year = request.form['maxYear']
 
     if genre == 'none':
-        return redirect(url_for('scrape_rotten_tomato', page=1, _method='POST'))
+        return redirect(url_for('scrape_rotten_tomato', page=1))
     else:
-        return redirect(url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=1, _method='POST'))
+        return redirect(url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=1))
 
 
 @app.route('/randomize', methods=['POST'])

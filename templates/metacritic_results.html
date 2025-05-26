@@ -4,73 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Metacritic Movies</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 140vh;
-            margin: 0;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'movie-red': '#e50914',
+                        'movie-dark': '#141414',
+                        'movie-gold': '#f5c842',
+                        'metacritic': '#ffcc34',
+                    }
+                }
+            }
         }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 500px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            font-size: 24px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            background-color: #f9f9f9;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-        .pagination {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .pagination a {
-            text-decoration: none;
-            color: #4CAF50;
-            font-weight: bold;
-        }
-        .pagination a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container">
-        <h1>Metacritic Movies</h1>
-        <ul>
-            {% for movie in movies %}
-                <li><strong>{{ movie.title }}</strong> - Year: {{ movie.year }}, Score: {{ movie.score }}</li>
-            {% endfor %}
-        </ul>
-        <div class="pagination">
-            {% if prev_page %}
-                <a href="{{ url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=prev_page) }}">Previous</a>
-            {% else %}
-                <span></span>
-            {% endif %}
-            {% if next_page %}
-                <a href="{{ url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=next_page) }}">Next</a>
-            {% endif %}
+<body class="min-h-screen bg-gradient-to-br from-movie-dark via-gray-900 to-black p-4">
+    <!-- Background pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0 bg-gradient-to-r from-metacritic/20 to-yellow-500/20"></div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 mb-6 border border-gray-200">
+            <div class="text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-metacritic to-yellow-500 rounded-full mb-4">
+                    <svg class="w-8 h-8 text-black" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Metacritic Movies</h1>
+                <p class="text-gray-600">Critically acclaimed films for your selection</p>
+            </div>
         </div>
-        <a href="/">Go Back</a>
+
+        <!-- Movies Grid -->
+        <div class="grid gap-4 mb-6">
+            {% for movie in movies %}
+            <div class="bg-white/95 backdrop-blur-sm rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-metacritic/50">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">{{ movie.title }}</h3>
+                        <div class="flex items-center space-x-4 text-sm text-gray-600">
+                            <div class="flex items-center space-x-1">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                </svg>
+                                <span>{{ movie.year }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 ml-4">
+                        <div class="bg-gradient-to-r from-metacritic to-yellow-500 text-black font-bold py-2 px-4 rounded-lg text-center">
+                            <div class="text-lg">{{ movie.score }}</div>
+                            <div class="text-xs opacity-75">Score</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination and Navigation -->
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-6 border border-gray-200">
+            <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+                <!-- Pagination -->
+                <div class="flex items-center space-x-4">
+                    {% if prev_page %}
+                        <a href="{{ url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=prev_page) }}" 
+                           class="flex items-center space-x-2 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold py-2 px-4 rounded-lg hover:from-gray-700 hover:to-gray-800 transition duration-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                            <span>Previous</span>
+                        </a>
+                    {% endif %}
+                    {% if next_page %}
+                        <a href="{{ url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=next_page) }}" 
+                           class="flex items-center space-x-2 bg-gradient-to-r from-gray-600 to-gray-700 text-white font-semibold py-2 px-4 rounded-lg hover:from-gray-700 hover:to-gray-800 transition duration-200">
+                            <span>Next</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Back to Home -->
+                <a href="/" 
+                   class="bg-gradient-to-r from-movie-red to-red-600 text-white font-semibold py-2 px-6 rounded-lg hover:from-red-600 hover:to-red-700 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        <span>Home</span>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

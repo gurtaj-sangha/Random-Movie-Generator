@@ -2,42 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Movie</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'movie-red': '#e50914',
+                        'movie-dark': '#141414',
+                        'movie-gold': '#f5c842',
+                    }
+                }
+            }
         }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 500px;
-            text-align: center;
-        }
-        h1 {
-            color: #333;
-            font-size: 24px;
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container">
-        <h1> Random Movie Selected</h1>
+<body class="min-h-screen bg-gradient-to-br from-movie-dark via-gray-900 to-black flex items-center justify-center p-4">
+    <!-- Background pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0 bg-gradient-to-r from-movie-red/20 to-movie-gold/20"></div>
+    </div>
+    
+    <div class="relative z-10 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl max-w-lg w-full border border-gray-200">
         {% if movie %}
-        <p><strong>Title:</strong> {{ movie.title }}</p>
-        <p><strong>Year:</strong> {{ movie.year }}</p>
-        <p><strong>Score:</strong> {{ movie.score }}</p>
+        <!-- Success State -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full mb-6">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">🎬 Your Random Movie</h1>
+            <p class="text-gray-600">Here's your personalized recommendation!</p>
+        </div>
+
+        <!-- Movie Card -->
+        <div class="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-6 mb-8 border border-gray-200">
+            <div class="space-y-4">
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0 w-8 h-8 bg-movie-red rounded-full flex items-center justify-center">
+                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="text-xl font-bold text-gray-800 leading-tight">{{ movie.title }}</h2>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white rounded-lg p-4 text-center border border-gray-200">
+                        <div class="text-2xl font-bold text-movie-red">{{ movie.year }}</div>
+                        <div class="text-sm text-gray-600 font-medium">Release Year</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 text-center border border-gray-200">
+                        <div class="text-2xl font-bold text-movie-gold">{{ movie.score }}</div>
+                        <div class="text-sm text-gray-600 font-medium">Rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% else %}
-        <p>No movies found for the given criteria.</p>
+        <!-- No Results State -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-orange-500 to-red-600 rounded-full mb-6">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.99-.833-2.732 0L3.732 19c-.77.833.192 2.5 1.732 2.5z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">No Movies Found</h1>
+            <p class="text-gray-600">Sorry, no movies match your criteria. Try adjusting your filters!</p>
+        </div>
         {% endif %}
-        <a href="/">Go Back</a>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <a href="/" 
+               class="flex-1 bg-gradient-to-r from-movie-red to-red-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-red-600 hover:to-red-700 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl text-center">
+                <div class="flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <span>Try Again</span>
+                </div>
+            </a>
+            {% if movie %}
+            <button onclick="window.location.reload()" 
+                    class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl">
+                <div class="flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    <span>Another One</span>
+                </div>
+            </button>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>

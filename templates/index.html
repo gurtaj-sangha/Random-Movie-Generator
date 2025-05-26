@@ -1,95 +1,108 @@
-<!-- index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Movie Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'movie-red': '#e50914',
+                        'movie-dark': '#141414',
+                        'movie-gold': '#f5c842',
+                    }
+                }
+            }
         }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            font-size: 24px;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin-top: 10px;
-            color: #666;
-        }
-        select, input[type="text"], button {
-            margin-top: 5px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-        .button-group {
-            display: flex;
-            justify-content: space-between
-        }
-        button {
-            width: 48%;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container">
-        <h1>Random Movie Generator</h1>
-        <form action="/scrape" method="post">
-            <label for="genre">Select Genre:</label>
-            <select id="genre" name="genre" required>
-                <option value="action">action</option>
-                <option value="comedy">comedy</option>
-                <option value="documentary">documentary</option>
-                <option value="horror">horror</option>
-                <option value="fantasy">fantasy</option>
-                <option value="romance">romance</option>
-                <option value="reality-tv">reality-tv</option>
-                <option value="sport">sport</option>
-                <option value="war">war</option>
-                <option value="none">none</option>
-            </select>
+<body class="min-h-screen bg-gradient-to-br from-movie-dark via-gray-900 to-black flex items-center justify-center p-4">
+    <!-- Background pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0 bg-gradient-to-r from-movie-red/20 to-movie-gold/20"></div>
+    </div>
+    
+    <div class="relative z-10 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl max-w-md w-full border border-gray-200">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-movie-red to-red-600 rounded-full mb-4">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v2H7V5zm8 8v2h1a1 1 0 001-1v-1h-2zm-2 2v-2H7v2h6zm-8 0v-2H3v1a1 1 0 001 1h1z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Movie Generator</h1>
+            <p class="text-gray-600">Discover your next favorite film</p>
+        </div>
 
-            <label for="minYear">Minimum Year:</label>
-            <input type="text" id="minYear" name="minYear" placeholder="e.g., 2000" required>
+        <form action="/scrape" method="post" class="space-y-6">
+            <!-- Genre Selection -->
+            <div class="space-y-2">
+                <label for="genre" class="block text-sm font-semibold text-gray-700">
+                    Select Genre
+                </label>
+                <select id="genre" name="genre" required 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-movie-red focus:border-transparent transition duration-200 bg-white shadow-sm">
+                    <option value="action">🎬 Action</option>
+                    <option value="comedy">😄 Comedy</option>
+                    <option value="documentary">📚 Documentary</option>
+                    <option value="horror">👻 Horror</option>
+                    <option value="fantasy">🧙‍♂️ Fantasy</option>
+                    <option value="romance">💕 Romance</option>
+                    <option value="reality-tv">📺 Reality TV</option>
+                    <option value="sport">⚽ Sport</option>
+                    <option value="war">⚔️ War</option>
+                    <option value="none">🎭 All Genres</option>
+                </select>
+            </div>
 
-            <label for="maxYear">Maximum Year:</label>
-            <input type="text" id="maxYear" name="maxYear" placeholder="e.g., 2020" required>
+            <!-- Year Range -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label for="minYear" class="block text-sm font-semibold text-gray-700">
+                        From Year
+                    </label>
+                    <input type="text" id="minYear" name="minYear" placeholder="2000" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-movie-red focus:border-transparent transition duration-200 shadow-sm">
+                </div>
+                <div class="space-y-2">
+                    <label for="maxYear" class="block text-sm font-semibold text-gray-700">
+                        To Year
+                    </label>
+                    <input type="text" id="maxYear" name="maxYear" placeholder="2024" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-movie-red focus:border-transparent transition duration-200 shadow-sm">
+                </div>
+            </div>
 
-            <div class="button-group">
-                <button type="submit">Generate Movies</button>
-                <button type="submit" formaction="/randomize">Randomize</button>
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-2 gap-4 pt-4">
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl">
+                    <div class="flex items-center justify-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        <span>Browse</span>
+                    </div>
+                </button>
+                <button type="submit" formaction="/randomize"
+                        class="w-full bg-gradient-to-r from-movie-red to-red-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-red-600 hover:to-red-700 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl">
+                    <div class="flex items-center justify-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                        <span>Random</span>
+                    </div>
+                </button>
             </div>
         </form>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-sm text-gray-500">
+            <p>Powered by Rotten Tomatoes & Metacritic</p>
+        </div>
     </div>
 </body>
 </html>
