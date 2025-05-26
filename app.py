@@ -19,7 +19,6 @@ def home():
 
 @app.route('/scrape', methods=['POST'])
 def scrape():
-    # Get user input from the form
     genre = request.form['genre']
     min_year = request.form['minYear']
     max_year = request.form['maxYear']
@@ -27,7 +26,6 @@ def scrape():
     if genre == 'none':
         return redirect(url_for('scrape_rotten_tomato', page=1))
     else:
-        # Redirect to Metacritic scraping with page number
         return redirect(url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=1))
 
 
@@ -37,10 +35,8 @@ def randomize():
     min_year = request.form['minYear']
     max_year = request.form['maxYear']
 
-    # Assuming first page for randomization
     page = 1
     if genre == 'none':
-        # Randomize from Rotten Tomatoes
         response = requests.get(ROTTEN_TOMATO_TOP_URL, headers={'User-Agent': random.choice(user_agents_list)})
         soup = BeautifulSoup(response.content, 'html.parser')
         results = soup.find(id="article_main_body")
@@ -50,7 +46,6 @@ def randomize():
         movies = [{'title': title.get_text(strip=True), 'score': score.get_text(strip=True), 'year': year.get_text(strip=True)}
                   for title, score, year in zip(titles, scores, years)]
     else:
-        # Randomize from Metacritic
         METACRITIC_GENRE_URL = f"https://www.metacritic.com/browse/movie/all/{genre}/all-time/metascore/?releaseYearMin={min_year}&releaseYearMax={max_year}&genre={genre}&page={page}"
         headers = {'User-Agent': random.choice(user_agents_list)}
         response = requests.get(METACRITIC_GENRE_URL, headers=headers)
@@ -62,7 +57,6 @@ def randomize():
         movies = [{'title': metaTitle.text.strip(), 'score': metaScore.text.strip(), 'year': metaYear.text.strip()}
                   for metaTitle, metaScore, metaYear in zip(metaTitles, metaScores, metaYears)]
 
-    # Randomly select a movie from the first page
     random_movie = random.choice(movies) if movies else None
 
     return render_template('random_results.html', movie=random_movie)
@@ -74,7 +68,6 @@ def scrape_metacritic():
     max_year = request.args.get('max_year')
     page = int(request.args.get('page', 1))
 
-    # Construct the Metacritic URL with pagination
     METACRITIC_GENRE_URL = f"https://www.metacritic.com/browse/movie/all/{genre}/all-time/metascore/?releaseYearMin={min_year}&releaseYearMax={max_year}&genre={genre}&page={page}"
 
     response = requests.get(METACRITIC_GENRE_URL, headers={'User-Agent': random.choice(user_agents_list)})
@@ -87,9 +80,7 @@ def scrape_metacritic():
         metaScores = results.find_all("div", class_="c-siteReviewScore u-flexbox-column u-flexbox-alignCenter u-flexbox-justifyCenter g-text-bold c-siteReviewScore_green g-color-gray90 c-siteReviewScore_xsmall")
         metaYears = results.find_all("span", class_="u-text-uppercase")
 
-        # Ensure all lists have the same length
         if len(metaTitles) == len(metaScores) == len(metaYears):
-            # Extract text and store results
             movies = [{'title': metaTitle.text.strip(), 'score': metaScore.text.strip(), 'year': metaYear.text.strip()}
                       for metaTitle, metaScore, metaYear in zip(metaTitles, metaScores, metaYears)]
         else:
@@ -99,8 +90,7 @@ def scrape_metacritic():
         if not movies:
             return "No movies found or incorrect selectors used. Please check the HTML structure."
 
-        # Determine if "Next" and "Previous" buttons should be displayed
-        next_page = page + 1 if len(movies) == 24 else None  # Metacritic shows 24 movies per page
+        next_page = page + 1 if len(movies) == 24 else None  
         prev_page = page - 1 if page > 1 else None
 
         return render_template('metacritic_results.html', movies=movies, next_page=next_page, prev_page=prev_page, genre=genre, min_year=min_year, max_year=max_year)
@@ -109,29 +99,25 @@ def scrape_metacritic():
 
 @app.route('/rotten-tomato', methods=['GET'])
 def scrape_rotten_tomato():
-    page = int(request.args.get('page', 1))  # Get current page from query parameter, default is 1
+    page = int(request.args.get('page', 1))  
     response = requests.get(ROTTEN_TOMATO_TOP_URL, headers={'User-Agent': random.choice(user_agents_list)})
     soup = BeautifulSoup(response.content, 'html.parser')
 
     results = soup.find(id="article_main_body")
 
     if results:
-        # Using correct selectors as per your scraping logic
         titles = results.find_all("a", class_="title")
         scores = results.find_all("span", class_="score")
         years = results.find_all("span", class_="year")
 
-        # Extract text and store results
         all_movies = [{'title': title.text.strip(), 'score': score.text.strip(), 'year': year.text.strip()}
                       for title, score, year in zip(titles, scores, years)]
 
-        # Pagination logic: 20 movies per page
         per_page = 20
         start_index = (page - 1) * per_page
         end_index = start_index + per_page
         paginated_movies = all_movies[start_index:end_index]
 
-        # Determine if "Next" and "Previous" buttons should be displayed
         next_page = page + 1 if end_index < len(all_movies) else None
         prev_page = page - 1 if start_index > 0 else None
 
