@@ -24,9 +24,9 @@ def scrape():
     max_year = request.form['maxYear']
 
     if genre == 'none':
-        return redirect(url_for('scrape_rotten_tomato', page=1))
+        return redirect(url_for('scrape_rotten_tomato', page=1, _method='POST'))
     else:
-        return redirect(url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=1))
+        return redirect(url_for('scrape_metacritic', genre=genre, min_year=min_year, max_year=max_year, page=1, _method='POST'))
 
 
 @app.route('/randomize', methods=['POST'])
@@ -61,7 +61,7 @@ def randomize():
 
     return render_template('random_results.html', movie=random_movie)
 
-@app.route('/metacritic', methods=['GET'])
+@app.route('/metacritic', methods=['GET', 'POST'])
 def scrape_metacritic():
     genre = request.args.get('genre')
     min_year = request.args.get('min_year')
@@ -97,7 +97,7 @@ def scrape_metacritic():
     else:
         return "Failed to parse Metacritic page structure or no data found."
 
-@app.route('/rotten-tomato', methods=['GET'])
+@app.route('/rotten-tomato', methods=['GET', 'POST'])
 def scrape_rotten_tomato():
     page = int(request.args.get('page', 1))  
     response = requests.get(ROTTEN_TOMATO_TOP_URL, headers={'User-Agent': random.choice(user_agents_list)})
