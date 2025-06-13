@@ -10,7 +10,7 @@ Or Hit *Random* and the app serves a single surprise title.
 |-|-|
 | **Filter-driven search** – Year, genre, critic score and more; returns results in < 200 ms. |
 | **“I’m Feeling Lucky” button** – One click fetches a random hidden gem. |
-| **Live critic data** – Scrapes Rotten Tomatoes / Metacritic (2 × daily) for up-to-date ratings. |
+| **Live critic data** – Scrapes Rotten Tomatoes / Metacritic right away for up-to-date ratings. |
 | **Responsive UI** – Plain HTML/CSS enhanced with Tailwind utility classes; mobile-first layout. |
 | **Python back-end** – Flask handles API endpoints; Django templating (Jinja2) renders pages. |
 
