@@ -5,7 +5,7 @@ Or Hit *Random* and the app serves a single surprise title.
 
 ---
 
-## ✨ Features
+##  Features
 | | |
 |-|-|
 | **Filter-driven search** – Year, genre, critic score and more; returns results in < 200 ms. |
@@ -16,18 +16,16 @@ Or Hit *Random* and the app serves a single surprise title.
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prereqs
 - Python 3.9+  
-- `virtualenv` *(optional but recommended)*
+- `virtualenv` *(optional)*
 
 ### 1 · Clone & install
 ```bash
 git clone https://github.com/your-handle/movie-discovery.git
 cd movie-discovery
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
 ```
 
 ### 2. Project Structure
